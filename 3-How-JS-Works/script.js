@@ -158,5 +158,3 @@ mike.calculateAge();
 
 // 'this' -> only becomes something as soon
 // as the method gets called.
-
-//vid 34.
