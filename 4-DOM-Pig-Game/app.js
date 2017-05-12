@@ -68,7 +68,6 @@ document.querySelector('.btn-roll').addEventListener(
   'click', function() {
     if(gamePlaying){
 
-
       //1. Random number
       var dice = Math.floor(Math.random() * 6) + 1;
 
@@ -87,12 +86,10 @@ document.querySelector('.btn-roll').addEventListener(
         document.querySelector('#score-'+activePlayer).textContent = 0;
         scores[activePlayer] = 0;
         nextPlayer();
-      }else{
-        previousDice = dice;
-      }
-      //3. Update the round score IF the rolled number was NOT a 1.
-      //Different.
-      if(dice !== 1){
+      }else if(dice !== 1){
+        //3. Update the round score IF the rolled number was NOT a 1.
+        //Different.
+
         //Add score
         roundScore += dice;
         document.querySelector('#current-'+
@@ -101,6 +98,8 @@ document.querySelector('.btn-roll').addEventListener(
         //Next player
         nextPlayer();
       }
+
+      previousDice = dice;
 
     }
 });
@@ -114,8 +113,24 @@ document.querySelector('.btn-hold').addEventListener(
       //Update UI
       document.querySelector('#score-'+activePlayer).textContent = scores[activePlayer];
 
+      /*
+      2. Add an input filed to the HTML where players can set the
+        winning score, so that they can change the predefined score
+        of 100. (Hint: you can read that value with the .value property
+        in JS. This is a good oportunity to use google to figure this out).
+      */
+      var input = document.querySelector('.btn-set-score').value;
+      var winningScore
+      //Undefined, 0, null, or "" are coerced to false
+      //Anything else is coerced to true
+      if(input){
+        winningScore = input;
+      }else{
+        winningScore = 100;
+      }
+
       //Check if player won the game.
-      if(scores[activePlayer]>=20){
+      if(scores[activePlayer]>=winningScore){
         document.querySelector('#name-'+activePlayer).textContent = 'Winner!';
         document.querySelector('.dice').style.display = 'none';
         document.querySelector('.player-'+activePlayer+'-panel').classList.add('winner');
