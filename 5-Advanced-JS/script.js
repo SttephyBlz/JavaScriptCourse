@@ -243,13 +243,141 @@ game();
 */
 //data privacy
 //inside () treats a function as a declaration
-(function() {
+/*(function() {
   var score = Math.random() * 10;
   console.log(score>=5);
 })();
-//console.log(score);
+//console.log(score); - err
 
 (function(goodLuck) {
   var score = Math.random() * 10;
   console.log(score>=5 - goodLuck);
 })(5);
+*/
+
+//Lecture: Closures.
+/*
+  Closure.
+    An inner function has always access to the
+    variables and parameters of its outer function,
+    even after the outer function has returned.
+
+    Variables stay in the scope chain even when
+    it is returned and deleted from execution stack.
+
+
+function retirement(retirementAge) {
+  var a = ' years left until retirement.';
+
+  return function(yearOfBirth) {
+    var age= 2016-yearOfBirth;
+    console.log((retirementAge-age)+ a);
+  }
+};
+
+var retirementUS = retirement(66);
+
+//retirement(66)(1990);
+
+
+var retirementGermany = retirement(65);
+
+var retirementIceland = retirement(67);
+
+
+retirementUS(1990);
+retirementGermany(1990);
+retirementIceland(1990);
+
+function interviewQuestion(job) {
+  return function(name) {
+    if (job === 'designer') {
+      console.log(name + ', can you please explain what UX design is?');
+    } else if(job === 'teacher'){
+      console.log('What subject do you teach, '+name+'?');
+
+    } else{
+      console.log('Hello '+ name + ', what do you do?');
+    }
+  }
+};
+
+interviewQuestion('teacher')('John');
+*/
+
+//Lecture: Bind, call and apply
+
+var john = {
+  name: 'John',
+  age: 26,
+  job: 'teacher',
+  presentation: function(style, timeOfDay) {
+    if(style === 'formal'){
+      console.log('Good '+timeOfDay+
+      ' ladies and gentlemen! I\'m '+
+      this.name +', I\'m a '+this.job+
+      ' and I\'m '+this.age+' years old.');
+    }else if (style === 'friendly'){
+      console.log('Hey! What\'s up? I\'m '+
+      this.name +', I\'m a '+this.job+
+      ' and I\'m '+this.age+' years old. Have a nice '+timeOfDay+'.');
+    }
+  }
+}
+
+var emily ={
+  name: 'Emily',
+  age: 35,
+  job: 'designer'
+}
+
+john.presentation('formal', 'morning');
+
+//Sets the 'this' variable of the first argument
+john.presentation.call(emily, 'friendly', 'afternoon');
+
+//Apply accepts the arguments as an array
+//john.presentation.apply(emily, ['friendly', 'afternoon']);
+
+//Bind: is similar to call, allows to set the 'this' variable explicity
+//generates a copy of the function
+var johnFriendly = john.presentation.bind(
+  john, 'friendly'
+);
+//carrying.
+johnFriendly('morning');
+johnFriendly('night');
+
+var emilyFormal = john.presentation.bind(emily, 'formal');
+
+emilyFormal('afternoon');
+
+
+var years = [1990,1965,1937,2005,1998];
+
+function arrayCalc(arr, fn) {
+  //fn is a callback function, because it's called later.
+  var arrRes = [];
+
+  for (var i = 0; i < arr.length; i++) {
+    arrRes.push(
+        fn(arr[i])
+      );
+  }
+
+  return arrRes;
+};
+
+function calculateAge(el) {
+  return 2016-el;
+};
+
+function isFullAge(limit, el) {
+  return el>=limit;
+}
+
+var ages = arrayCalc(years, calculateAge);
+
+var fullJapan = arrayCalc(ages, isFullAge.bind(this, 20));
+
+console.log(fullJapan);
