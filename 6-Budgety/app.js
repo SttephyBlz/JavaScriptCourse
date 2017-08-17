@@ -22,36 +22,42 @@
 
 */
 //IIFE (Immediately invoked function expression)
+//Budget Controller
 var budgetController = (function() {
-  var x = 23;
 
-  var add = function(a){
-    return x+a;
-  }
+  //Some code
 
-  return {
-    publicText: function(b){
-      return add(b);
-    }
-  }
 })();
 
-
+// UI Controller
 var UIController = (function() {
 
   //Some code
 
 })();
 
-
+//Global App Controller
 var controller = (function(budgetCtrl, UICtrl){
 
-  var z = budgetCtrl.publicText(1);
+  var ctrlAddItem = function(){
+    // 1. Get the filed input data
 
-  return {
-    anotherPublic: function(){
-      console.log(z);
+    // 2. Add the item to the budget controller
+
+    // 3. Add the item to the UI
+
+    // 4. Calculate the budget
+
+    // 5. Display the budget on the UI
+    console.log('Woo');
+  }
+
+  document.querySelector('.add__btn').addEventListener('click', ctrlAddItem);
+
+  document.addEventListener('keypress', function(event){
+    if(event.keyCode === 13 || event.which === 13){
+      ctrlAddItem();
     }
-  };
+  });
 
 })(budgetController, UIController);
